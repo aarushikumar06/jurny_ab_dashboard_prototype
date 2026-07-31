@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A/B Test Results — Dashboard Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-900:#2B1150;
+    --purple-800:#341764;
+    --purple-700:#3E1E79;
+    --purple-500:#5B2CA6;
+    --purple-accent:#7C3AED;
+    --lavender:#C9B7ED;
+    --lavender-soft:#B3A0DE;
+    --bg:#F6F5F8;
+    --card:#FFFFFF;
+    --border:#E9E7EF;
+    --ink:#181321;
+    --muted:#8D89A0;
+    --muted-2:#B4B0C4;
+    --good:#1E9E6B;
+    --good-bg:#E7F7F1;
+    --bad:#D64545;
+    --bad-bg:#FBEAEA;
+    --warn:#B5842A;
+    --warn-bg:#FBF1E1;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{ display:flex; min-height:100vh; }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    width:236px;
+    background:var(--card);
+    border-right:1px solid var(--border);
+    padding:22px 16px;
+    flex-shrink:0;
+  }
+  .logo{ display:flex; align-items:center; gap:9px; padding:4px 8px 26px; }
+  .logo-dot{
+    width:26px; height:26px; border-radius:9px;
+    background:radial-gradient(circle at 30% 30%, #A78BFA, var(--purple-accent) 70%);
+  }
+  .logo-text{ font-family:'Inter Tight'; font-weight:800; font-size:19px; letter-spacing:-0.02em; color:var(--ink); }
+
+  .nav-group-label{
+    font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--muted-2); margin:20px 10px 8px;
+  }
+  .nav-item{
+    display:flex; align-items:center; gap:11px;
+    padding:9px 10px; border-radius:10px;
+    font-size:14.5px; font-weight:500; color:#4B4760;
+    cursor:default; margin-bottom:2px;
+  }
+  .nav-item svg{ opacity:.7; }
+  .nav-item.active{ background:#F1ECFB; color:var(--purple-700); font-weight:600; }
+  .nav-item.active svg{ opacity:1; }
+  .sidebar-footer{
+    margin-top:auto; padding-top:20px;
+  }
+
+  /* ---------- MAIN ---------- */
+  .main{ flex:1; min-width:0; display:flex; flex-direction:column; }
+
+  .topbar{
+    height:64px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 28px; border-bottom:1px solid var(--border); background:var(--card);
+  }
+  .topbar-left{ display:flex; align-items:center; gap:16px; }
+  .topbar-title{ font-weight:700; font-size:15px; letter-spacing:-.01em; }
+  .icon-btn{
+    width:32px; height:32px; border-radius:8px; border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center; color:var(--muted);
+  }
+  .sim-btn{
+    background:linear-gradient(180deg,#6A32C4,#5A24B0);
+    color:#fff; border:none; padding:9px 18px; border-radius:10px;
+    font-weight:600; font-size:13.5px; display:flex; align-items:center; gap:7px;
+    box-shadow:0 1px 2px rgba(90,36,176,.25);
+  }
+  .account{ display:flex; align-items:center; gap:9px; font-size:13.5px; color:#3D3950; font-weight:500;}
+  .avatar{ width:26px; height:26px; border-radius:50%; background:#EDEAF6; color:var(--purple-700);
+    display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+
+  .content{ padding:28px 32px 60px; max-width:1180px; }
+
+  /* ---------- PILL ROW ---------- */
+  .pill-row{ display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+  .pill{
+    border:1px solid var(--border); background:var(--card);
+    padding:7px 14px; border-radius:999px; font-size:13px; font-weight:600; color:#54506A;
+    display:flex; align-items:center; gap:7px;
+  }
+  .pill .dot{ width:6px; height:6px; border-radius:50%; }
+  .pill.live .dot{ background:var(--good); box-shadow:0 0 0 3px var(--good-bg); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:radial-gradient(120% 160% at 0% 0%, var(--purple-700) 0%, var(--purple-900) 100%);
+    border-radius:22px; padding:34px 38px 30px; margin-bottom:22px;
+    position:relative; overflow:hidden;
+  }
+  .hero::after{
+    content:""; position:absolute; right:-60px; top:-80px; width:320px; height:320px;
+    background:radial-gradient(circle, rgba(255,255,255,.06), transparent 70%);
+  }
+  .hero-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:24px; }
+  .hero-eyebrow{
+    font-size:11.5px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--lavender-soft); margin-bottom:10px;
+  }
+  .hero-title{
+    font-family:'Inter Tight'; font-weight:800; font-size:34px; letter-spacing:-0.02em;
+    color:#F3EEFC; line-height:1.15; max-width:640px; margin:0 0 12px;
+  }
+  .hero-desc{ color:var(--lavender); font-size:14.5px; line-height:1.6; max-width:560px; }
+  .hero-badge{
+    flex-shrink:0; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);
+    border-radius:14px; padding:16px 20px; text-align:right; min-width:190px;
+  }
+  .hero-badge .status{
+    display:inline-flex; align-items:center; gap:6px; background:var(--good-bg); color:var(--good);
+    font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px; margin-bottom:12px;
+  }
+  .hero-badge .status .dot{ width:6px; height:6px; border-radius:50%; background:var(--good); }
+  .hero-compare{ display:flex; justify-content:flex-end; align-items:baseline; gap:10px; }
+  .hero-compare-item{ text-align:right; }
+  .hero-compare-value{ font-family:'Inter Tight'; font-weight:800; color:#fff; }
+  .hero-compare-value.control{ font-size:17px; color:var(--lavender-soft); text-decoration:line-through; text-decoration-color:rgba(201,183,237,.5); text-decoration-thickness:1.5px; }
+  .hero-compare-value.variant{ font-size:28px; }
+  .hero-compare-label{ font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--lavender-soft); margin-top:3px; }
+  .hero-arrow{ color:var(--lavender-soft); font-size:16px; }
+  .hero-lift-label{ font-size:12px; color:var(--lavender-soft); margin-top:10px; }
+  .hero-lift-label b{ color:#F3EEFC; font-weight:700; }
+
+  .hero-stats{
+    display:flex; gap:34px; margin-top:26px; padding-top:22px;
+    border-top:1px solid rgba(255,255,255,.12);
+  }
+  .hero-stat-label{ font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--lavender-soft); margin-bottom:5px;}
+  .hero-stat-value{ font-size:16px; font-weight:700; color:#F3EEFC; }
+
+  /* ---------- SECTION HEADER ---------- */
+  .section-header{
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:16px 22px; margin-bottom:16px; font-weight:700; font-size:15px;
+  }
+  .section-header .chev{ color:var(--muted-2); }
+
+  /* ---------- METRIC GRID ---------- */
+  .metric-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px; }
+  .metric-card{
+    background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px;
+  }
+  .metric-tag{
+    display:inline-block; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    padding:3px 8px; border-radius:6px; margin-bottom:14px;
+  }
+  .tag-secondary{ background:#EEF1F8; color:#4F5A78; }
+  .tag-guardrail{ background:var(--warn-bg); color:var(--warn); }
+  .metric-label{ font-size:12.5px; color:var(--muted); font-weight:600; margin-bottom:8px; }
+  .metric-value{ font-family:'Inter Tight'; font-size:27px; font-weight:800; letter-spacing:-.01em; }
+  .metric-delta{ font-size:12.5px; font-weight:700; margin-top:6px; display:flex; align-items:center; gap:5px; }
+  .delta-good{ color:var(--good); } .delta-bad{ color:var(--bad); } .delta-flat{ color:var(--muted); }
+
+  .metric-compare{ display:flex; align-items:baseline; gap:8px; }
+  .metric-compare .metric-value{ font-size:23px; }
+  .metric-compare .control-val{ font-size:14px; font-weight:700; color:var(--muted-2); text-decoration:line-through; text-decoration-thickness:1.5px; }
+  .metric-compare .arrow{ font-size:13px; color:var(--muted-2); }
+  .metric-threshold{ font-size:11px; color:var(--muted-2); font-weight:600; text-transform:none; letter-spacing:0; }
+  .metric-delta{ margin-top:12px; }
+
+  /* ---------- CHART CARD ---------- */
+  .chart-card{
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:24px 26px; margin-bottom:22px;
+  }
+  .chart-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; }
+  .chart-title{ font-weight:700; font-size:15px; }
+  .legend{ display:flex; gap:18px; font-size:12.5px; color:var(--muted); font-weight:600; }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .swatch{ width:10px; height:10px; border-radius:3px; }
+  .sw-control{ background:#D8D4E4; }
+  .sw-variant{ background:var(--purple-accent); }
+  .chart-body{ display:flex; align-items:flex-end; gap:22px; height:150px; padding:0 4px; }
+  .bar-group{ flex:1; display:flex; gap:5px; align-items:flex-end; height:100%; }
+  .bar{ flex:1; border-radius:5px 5px 0 0; }
+  .bar-control{ background:#D8D4E4; }
+  .bar-variant{ background:linear-gradient(180deg,#8B5CF6,#6D28D9); }
+  .chart-x{ display:flex; gap:22px; margin-top:10px; padding:0 4px; }
+  .chart-x span{ flex:1; text-align:center; font-size:11px; color:var(--muted-2); font-weight:600; }
+
+  /* ---------- ANSWER / INSIGHTS ---------- */
+  .answer-card{
+    background:var(--card); border:1px solid var(--border); border-radius:16px; padding:26px;
+  }
+  .answer-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+  .answer-title{ font-weight:700; font-size:16px; }
+  .generate-btn{
+    display:flex; align-items:center; gap:7px; background:#F1ECFB; color:var(--purple-700);
+    border:1px solid #E1D5F7; padding:8px 14px; border-radius:10px; font-weight:700; font-size:12.5px;
+  }
+  .rec-banner{
+    display:flex; align-items:center; gap:12px; background:var(--good-bg); border:1px solid #CDEEE0;
+    border-radius:12px; padding:14px 18px; margin-bottom:24px;
+  }
+  .rec-badge{ background:var(--good); color:#fff; font-weight:800; font-size:11.5px; letter-spacing:.04em;
+    padding:5px 11px; border-radius:999px; text-transform:uppercase; flex-shrink:0; }
+  .rec-text{ font-size:13.5px; color:#1D6B4B; font-weight:500; line-height:1.5; }
+
+  .insight-label{
+    font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted);
+    margin:22px 0 10px;
+  }
+  .insight-label:first-of-type{ margin-top:0; }
+  .takeaway-list{ margin:0; padding:0; list-style:none; }
+  .takeaway-list li{
+    font-size:14px; line-height:1.6; color:#38344A; padding:9px 0; border-bottom:1px solid #F1EFF5;
+  }
+  .takeaway-list li:last-child{ border-bottom:none; }
+
+  .quote-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .quote-card{
+    background:#FAF9FC; border:1px solid var(--border); border-radius:12px; padding:14px 16px;
+  }
+  .quote-card.liked{ border-left:3px solid var(--good); }
+  .quote-card.friction{ border-left:3px solid var(--bad); }
+  .quote-text{ font-size:13px; font-style:italic; color:#3E3A50; line-height:1.55; margin-bottom:8px; }
+  .quote-meta{ font-size:11.5px; color:var(--muted); font-weight:600; }
+
+  /* ---------- EXPERIENCE SCORES ---------- */
+  .score-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:22px; }
+  .score-card{
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:18px 16px; text-align:center;
+  }
+  .score-label{
+    font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:12px;
+  }
+  .score-value{ font-family:'Inter Tight'; font-size:30px; font-weight:800; letter-spacing:-.01em; }
+  .score-value .of{ font-size:14px; color:var(--muted-2); font-weight:700; }
+  .score-delta{
+    display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:700;
+    margin-top:9px; padding:3px 9px; border-radius:999px;
+  }
+  .score-delta.good{ color:var(--good); background:var(--good-bg); }
+  .score-delta.bad{ color:var(--bad); background:var(--bad-bg); }
+  .score-note{ font-size:10.5px; color:var(--muted-2); font-weight:600; margin-top:7px; }
+
+  /* ---------- ISSUES ---------- */
+  .issue-list{ display:flex; flex-direction:column; gap:10px; }
+  .issue-row{
+    display:flex; align-items:flex-start; gap:12px;
+    background:#FAF9FC; border:1px solid var(--border); border-radius:12px; padding:13px 16px;
+  }
+  .sev-dot{ width:9px; height:9px; border-radius:50%; margin-top:5px; flex-shrink:0; }
+  .sev-medium{ background:var(--warn); }
+  .sev-low{ background:#9A97B0; }
+  .sev-positive{ background:var(--good); }
+  .issue-body{ flex:1; }
+  .issue-title{ font-size:13.5px; font-weight:700; color:#2A2538; margin-bottom:3px; }
+  .issue-desc{ font-size:12.5px; color:var(--muted); line-height:1.5; }
+  .issue-sev-tag{
+    flex-shrink:0; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    padding:3px 9px; border-radius:999px; margin-top:1px;
+  }
+  .issue-sev-tag.medium{ background:var(--warn-bg); color:var(--warn); }
+  .issue-sev-tag.low{ background:#EFEDF5; color:#6F6B85; }
+  .issue-sev-tag.positive{ background:var(--good-bg); color:var(--good); }
+
+  /* ---------- QUOTES CAROUSEL ---------- */
+  .quotes-card{
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:24px 26px 26px; margin-top:22px;
+  }
+  .quotes-head{ display:flex; justify-content:space-between; align-items:center; padding-bottom:18px; border-bottom:1px solid var(--border); margin-bottom:22px; }
+  .quotes-title{ font-weight:700; font-size:17px; }
+  .quotes-count{ border:1px solid var(--border); border-radius:999px; padding:6px 14px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .quote-cards-row{
+    display:flex; gap:16px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;
+  }
+  .quote-cards-row::-webkit-scrollbar{ height:8px; }
+  .quote-cards-row::-webkit-scrollbar-track{ background:#F3F1F8; border-radius:8px; }
+  .quote-cards-row::-webkit-scrollbar-thumb{ background:#D3C7EC; border-radius:8px; }
+  .quote-cards-row::-webkit-scrollbar-thumb:hover{ background:#C1AEE0; }
+  .qc-card{
+    border:1px solid var(--border); border-radius:14px; padding:18px 18px 20px;
+    display:flex; flex-direction:column; min-height:260px;
+    flex:0 0 300px; scroll-snap-align:start;
+  }
+  .qc-tags{ display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .qc-tag{
+    border:1px solid var(--border); border-radius:999px; padding:6px 12px;
+    font-size:12px; font-weight:600; color:#4B4760; white-space:nowrap;
+  }
+  .qc-tag.issue-tag{ background:var(--bad-bg); border-color:#F3D3D3; color:var(--bad); }
+  .qc-hide{
+    margin-left:auto; width:28px; height:28px; border-radius:50%; border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center; color:var(--muted-2); flex-shrink:0;
+  }
+  .qc-text{ font-size:15px; line-height:1.55; color:#2A2538; flex:1; }
+  .qc-footer{ display:flex; justify-content:center; margin-top:18px; }
+  .qc-open-btn{
+    background:var(--purple-900); color:#fff; border:none; padding:9px 20px;
+    border-radius:999px; font-weight:700; font-size:12.5px;
+  }
+
+  /* ---------- PAIRED PATH FLOW ---------- */
+  .flow-card{ background:var(--card); border:1px solid var(--border); border-radius:18px; padding:26px 28px 20px; }
+  .flow-legend{ display:flex; gap:20px; flex-wrap:wrap; margin-bottom:8px; }
+  .fl-item{ display:flex; align-items:center; gap:7px; font-size:12px; font-weight:600; color:#4B4760; }
+  .fl-swatch{ width:15px; height:7px; border-radius:3px; }
+  .fl-pin{ width:15px; height:15px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:9px; font-weight:800; }
+
+  .flow-row{ margin-top:18px; }
+  .flow-row-label{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .flow-row-name{ font-size:12.5px; font-weight:800; letter-spacing:.03em; text-transform:uppercase; color:#2A2140; }
+  .flow-row-stat{ font-size:12px; color:var(--muted); font-weight:600; }
+  .flow-canvas{ position:relative; width:100%; aspect-ratio:1000/205; }
+  .pv-eyebrow{ font-size:10px; font-weight:700; letter-spacing:.08em; fill:#9CA3AF; }
+  .pv-label{ font-size:11.5px; font-weight:600; fill:#3A3550; }
+  .pv-value{ font-size:11.5px; font-weight:700; fill:#241B3D; }
+  .pv-center-label{ font-size:12.5px; font-weight:800; fill:#241B3D; }
+  .flow-canvas svg{ width:100%; height:100%; display:block; }
+
+  .flow-marker{
+    position:absolute; width:22px; height:22px; margin:-11px 0 0 -11px;
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:11px; font-weight:800; cursor:pointer;
+    border:2.5px solid #fff; box-shadow:0 2px 6px rgba(20,10,40,.25);
+    transition:transform .15s ease;
+  }
+  .flow-marker:hover{ transform:scale(1.12); }
+  .flow-marker.m-p5{ background:var(--bad); }
+  .flow-marker.m-p4{ background:var(--warn); }
+  .flow-marker.m-p3{ background:var(--purple-accent); }
+  .flow-marker.m-p2{ background:#8B87A0; }
+  .flow-marker.m-p1{ background:#C4C1D6; }
+  .flow-marker.m-positive{ background:var(--good); }
+  .flow-marker.active{ transform:scale(1.28); box-shadow:0 0 0 5px rgba(124,58,237,.22), 0 2px 8px rgba(20,10,40,.3); }
+
+  .flow-divider{ height:1px; background:var(--border); margin:22px 0 4px; }
+
+  /* Issues list linked to flow */
+  .linked-issue-row{
+    display:flex; align-items:flex-start; gap:12px;
+    background:#FAF9FC; border:1.5px solid var(--border); border-radius:12px; padding:13px 16px;
+    cursor:pointer; margin-bottom:10px; transition:border-color .15s ease, background .15s ease;
+  }
+  .linked-issue-row:hover{ border-color:#D8CCF0; }
+  .linked-issue-row.active{ border-color:var(--purple-accent); background:#F6F2FD; }
+  .li-pin{ width:24px; height:24px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:11.5px; font-weight:800; margin-top:1px; }
+  .li-body{ flex:1; }
+  .li-title{ font-size:13.5px; font-weight:700; color:#2A2538; margin-bottom:3px; }
+  .li-desc{ font-size:12.5px; color:var(--muted); line-height:1.5; }
+  .li-applies{ font-size:11px; color:var(--muted-2); font-weight:700; margin-top:6px; }
+
+  .detail-drawer{
+    background:#F6F2FD; border:1.5px solid #E1D5F7; border-radius:14px; padding:20px 22px;
+    margin-top:16px; display:none;
+  }
+
+  /* ---------- EVIDENCE-STYLE ISSUES ---------- */
+  .issues-head{ display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .issues-title{ font-weight:700; font-size:17px; margin-right:auto; }
+  .included-pill{
+    background:var(--purple-900); color:#fff; border:none; padding:8px 16px;
+    border-radius:999px; font-weight:700; font-size:12.5px; cursor:default;
+  }
+  .count-pill{ border:1px solid var(--border); border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:600; color:var(--muted); }
+
+  .priority-filters{ display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+  .pf-chip{
+    display:flex; align-items:center; gap:8px; border:1px solid var(--border); border-radius:999px;
+    padding:7px 14px; font-size:12.5px; font-weight:600; color:#4B4760; cursor:pointer; background:#fff;
+  }
+  .pf-chip.selected{ border-color:var(--purple-900); background:#F6F2FD; color:var(--purple-900); }
+  .pf-dot{ width:8px; height:8px; border-radius:50%; }
+  .pf-count{ background:#F1EFF5; border-radius:999px; padding:1px 7px; font-size:11px; font-weight:700; }
+  .pf-chip.selected .pf-count{ background:#E1D2F7; }
+
+  .evidence-card{
+    display:grid; grid-template-columns:1.6fr 1fr; border:1.5px solid var(--border); border-radius:14px;
+    overflow:hidden; margin-bottom:16px; transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .evidence-card.active{ border-color:var(--purple-accent); box-shadow:0 0 0 3px rgba(124,58,237,.12); }
+  .ev-left{ padding:20px 22px; border-right:1px solid var(--border); }
+  .ev-tags{ display:flex; gap:8px; margin-bottom:14px; }
+  .ev-tag{ border:1px solid var(--border); border-radius:999px; padding:5px 12px; font-size:11.5px; font-weight:700; color:#4B4760; }
+  .ev-tag.pri{ color:#fff; border:none; }
+  .ev-tag.pri.p5{ background:var(--bad); }
+  .ev-tag.pri.p4{ background:var(--warn); }
+  .ev-tag.pri.p3{ background:var(--purple-accent); }
+  .ev-tag.pri.p2{ background:#8B87A0; }
+  .ev-tag.pri.p1{ background:#C4C1D6; color:#3A3550; }
+  .ev-tag.pri.positive{ background:var(--good); }
+  .ev-category{ font-weight:800; font-size:16px; margin-bottom:12px; color:#1E1830; }
+  .ev-desc{ font-size:13.5px; line-height:1.65; color:#3A3550; border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:16px; }
+  .ev-desc b{ color:#1E1830; }
+  .ev-eyebrow{ font-size:10.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-bottom:7px; }
+  .ev-suggestion{ font-size:13px; line-height:1.6; color:#3A3550; }
+
+  .ev-right{ background:#FAF9FC; padding:20px 22px; display:flex; flex-direction:column; }
+  .ev-shot-eyebrow{ font-size:10.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted-2); margin-bottom:10px; }
+  .ev-shot{
+    flex:1; min-height:140px; background:#fff; border:1px solid var(--border); border-radius:10px;
+    display:flex; align-items:center; justify-content:center; color:var(--muted-2); font-size:24px;
+  }
+  .ev-shot-caption{ font-size:11px; color:var(--muted); font-weight:600; margin-top:8px; }
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay{
+    display:none; position:fixed; inset:0; background:rgba(24,15,40,.45);
+    z-index:50; align-items:flex-start; justify-content:center; padding:40px 24px; overflow-y:auto;
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal-panel{
+    background:var(--card); border-radius:18px; max-width:1080px; width:100%;
+    box-shadow:0 20px 60px rgba(20,10,40,.35); overflow:hidden;
+  }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; padding:22px 26px; border-bottom:1px solid var(--border); }
+  .modal-title{ font-weight:800; font-size:17px; }
+  .modal-close{ background:var(--purple-900); color:#fff; border:none; padding:9px 18px; border-radius:999px; font-weight:700; font-size:12.5px; cursor:pointer; }
+  .modal-body{ padding:24px 26px 28px; max-height:75vh; overflow-y:auto; }
+
+  .modal-tabs{ display:flex; gap:8px; margin-bottom:20px; }
+  .m-tab{ border:1px solid var(--border); border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:700; color:#4B4760; cursor:pointer; background:#fff; }
+  .m-tab.active{ background:var(--purple-900); color:#fff; border-color:var(--purple-900); }
+  .m-tabpanel{ display:none; }
+  .m-tabpanel.active{ display:block; }
+
+  .m-quote-list{ display:flex; flex-direction:column; gap:12px; }
+  .m-quote-item{ background:#FAF9FC; border:1px solid var(--border); border-radius:12px; padding:15px 17px; }
+  .m-quote-tags{ display:flex; gap:8px; margin-bottom:9px; }
+  .m-quote-text{ font-size:13.5px; line-height:1.6; color:#2E2A3E; }
+  .m-quote-meta{ font-size:11.5px; color:var(--muted); font-weight:600; margin-top:8px; }
+
+  /* ---------- SINGLE-ISSUE POPUP ---------- */
+  .issue-popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(24,15,40,.45);
+    z-index:60; align-items:center; justify-content:center; padding:24px;
+  }
+  .issue-popup-overlay.show{ display:flex; }
+  .issue-popup{
+    background:var(--card); border-radius:18px; max-width:440px; width:100%;
+    box-shadow:0 20px 60px rgba(20,10,40,.35); padding:22px 24px 24px;
+  }
+  .ip-head{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; gap:10px; }
+  .ip-tags{ display:flex; gap:8px; flex-wrap:wrap; }
+  .ip-close{
+    width:26px; height:26px; border-radius:50%; border:1px solid var(--border); background:#fff;
+    color:var(--muted); flex-shrink:0; cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center;
+  }
+  .ip-category{ font-weight:800; font-size:15.5px; margin-bottom:12px; color:#1E1830; }
+  .ip-quote{
+    background:#FAF9FC; border:1px solid var(--border); border-radius:10px; padding:13px 15px;
+    font-size:13.5px; font-style:italic; line-height:1.6; color:#2E2A3E; margin-bottom:16px;
+  }
+  .ip-desc{ font-size:13px; line-height:1.6; color:#3A3550; margin-bottom:16px; }
+  .ip-replay-label{ font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:9px; }
+  .ip-shots{ position:relative; margin-bottom:10px; }
+  .ip-shot-frame{
+    background:#F1EFF5; border:1.5px solid var(--border); border-radius:10px; height:160px;
+    display:flex; align-items:center; justify-content:center; font-size:30px; color:var(--muted-2);
+  }
+  .ip-shot-frame.flagged{ border-color:var(--bad); box-shadow:0 0 0 2px rgba(225,75,75,.15); }
+  .ip-shot-nav{ position:absolute; top:50%; left:0; right:0; transform:translateY(-50%); display:flex; justify-content:space-between; padding:0 8px; }
+  .ip-shot-arrow{
+    width:30px; height:30px; border-radius:50%; background:#fff; border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 6px rgba(20,10,40,.15);
+    font-size:14px; color:#4B4760;
+  }
+  .ip-shot-dots{ display:flex; justify-content:center; gap:6px; margin-top:10px; }
+  .ip-shot-dot{ width:7px; height:7px; border-radius:50%; background:#D9D3E8; cursor:pointer; transition:width .15s ease; }
+  .ip-shot-dot.active{ background:var(--purple-accent); width:18px; border-radius:4px; }
+  .ip-replay-caption{ font-size:11.5px; color:var(--muted); font-weight:600; text-align:center; margin-top:9px; margin-bottom:18px; }
+  .ip-allissues-btn{
+    width:100%; background:#F1ECFB; color:var(--purple-700); border:1px solid #E1D5F7;
+    padding:11px; border-radius:10px; font-weight:700; font-size:13px; cursor:pointer;
+  }
+
+  /* ---------- SCENARIO TOGGLE ---------- */
+  .scenario-toggle{
+    display:inline-flex; background:#F1EFF5; border-radius:999px; padding:4px; margin-bottom:20px; gap:2px;
+  }
+  .scenario-btn{
+    border:none; background:transparent; padding:9px 18px; border-radius:999px;
+    font-size:13px; font-weight:700; color:#6B6780; cursor:pointer;
+  }
+  .scenario-btn.active{ background:#fff; color:var(--purple-900); box-shadow:0 1px 4px rgba(20,10,40,.12); }
+  .scenario-block{ display:none; }
+  .scenario-block.active{ display:block; }
+  .detail-drawer.show{ display:block; }
+  .detail-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .detail-title{ font-weight:700; font-size:14.5px; color:var(--purple-900); }
+  .detail-close{ font-size:12px; font-weight:700; color:var(--purple-700); cursor:pointer; }
+  .detail-quote{ font-size:13.5px; font-style:italic; color:#3A3550; line-height:1.6; background:#fff; border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:14px; }
+  .detail-quote-meta{ font-size:11.5px; color:var(--muted); font-weight:700; margin-top:8px; font-style:normal; }
+  .filmstrip-label{ font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:9px; }
+  .filmstrip{ display:flex; gap:10px; }
+  .frame{ flex:1; background:#fff; border:1px solid var(--border); border-radius:10px; padding:10px; text-align:center; }
+  .frame.at-issue{ border-color:var(--bad); box-shadow:0 0 0 2px rgba(225,75,75,.15); }
+  .frame-screen{ height:64px; background:#F1EFF5; border-radius:6px; display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
+  .frame-label{ font-size:10.5px; font-weight:700; color:#4B4760; }
+  .frame-step{ font-size:10px; color:var(--muted-2); font-weight:600; margin-top:2px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <div class="logo-text">jurny</div>
+    </div>
+
+    <div class="nav-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Questions</div>
+    <div class="nav-item active"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V10M12 19V5M20 19v-7"/></svg>Results</div>
+
+    <div class="nav-group-label">Library</div>
+    <div class="nav-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>Personas</div>
+    <div class="nav-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.8" fill="currentColor"/></svg>Goals</div>
+    <div class="nav-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v7M9 6l3-3 3 3"/><rect x="4" y="12" width="16" height="8" rx="2"/></svg>Synthetic Users</div>
+
+    <div class="nav-group-label">Monitoring</div>
+    <div class="nav-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l2 8 4-16 2 8h6"/></svg>Adaptive Monitoring</div>
+    <div class="nav-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>Issues</div>
+
+    <div class="nav-group-label">Memory</div>
+    <div class="nav-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3a5 5 0 0 0-5 5v1a4 4 0 0 0 0 8v1a5 5 0 0 0 5 5M15 3a5 5 0 0 1 5 5v1a4 4 0 0 1 0 8v1a5 5 0 0 1-5 5"/></svg>Memory</div>
+
+    <div class="sidebar-footer">
+      <div class="nav-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9c.2.6.7 1 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="icon-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
+        </div>
+        <div class="topbar-title" id="topbar-title-text">Onboarding Flow Length — Results</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <button class="sim-btn">▷ Simulation</button>
+        <div class="account">
+          <div class="avatar">U</div>
+          user@company.com ⌄
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="scenario-toggle">
+        <button class="scenario-btn active" id="btn-saas" onclick="switchScenario('saas')">SaaS Onboarding</button>
+        <button class="scenario-btn" id="btn-ecommerce" onclick="switchScenario('ecommerce')">E-commerce Checkout</button>
+      </div>
+
+      <div id="scenario-saas" class="scenario-block active">
+      <div class="pill-row">
+        <div class="pill">2 variants</div>
+        <div class="pill">1 guardrail breached</div>
+      </div>
+
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-top">
+          <div>
+            <div class="hero-eyebrow">Test Hypothesis</div>
+            <h1 class="hero-title">Reducing onboarding from 6 steps to 3 will increase users' stated intent to continue using the product.</h1>
+            <div class="hero-desc">We know the current flow re-asks for information and gives no sense of progress — both of which show up in user testing as reasons people disengage before finishing.</div>
+          </div>
+          <div class="hero-badge">
+            <div class="status"><span class="dot"></span>Significant win</div>
+            <div class="hero-compare">
+              <div class="hero-compare-item">
+                <div class="hero-compare-value control">58%</div>
+                <div class="hero-compare-label">Control</div>
+              </div>
+              <div class="hero-arrow">→</div>
+              <div class="hero-compare-item">
+                <div class="hero-compare-value variant">71%</div>
+                <div class="hero-compare-label">Variant</div>
+              </div>
+            </div>
+            <div class="hero-lift-label">stated continuation · <b>+22.4%</b> relative lift</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION HEADER -->
+      <div class="section-header">
+        Secondary &amp; Guardrail Metrics
+        <span class="chev">⌄</span>
+      </div>
+
+      <!-- METRIC GRID -->
+      <div class="metric-grid">
+        <div class="metric-card">
+          <span class="metric-tag tag-secondary">Secondary</span>
+          <div class="metric-label">Time to Complete Onboarding</div>
+          <div class="metric-compare">
+            <span class="control-val">4m42s</span>
+            <span class="arrow">→</span>
+            <span class="metric-value">1m48s</span>
+          </div>
+          <div class="metric-delta delta-good">▼ 62% faster</div>
+        </div>
+        <div class="metric-card">
+          <span class="metric-tag tag-guardrail">Guardrail</span>
+          <div class="metric-label">Setup Completeness <span class="metric-threshold">(≥ 80%)</span></div>
+          <div class="metric-compare">
+            <span class="control-val">91%</span>
+            <span class="arrow">→</span>
+            <span class="metric-value" style="color:var(--bad);">68%</span>
+          </div>
+          <div class="metric-delta delta-bad">✕ Below threshold</div>
+        </div>
+        <div class="metric-card">
+          <span class="metric-tag tag-guardrail">Guardrail</span>
+          <div class="metric-label">Confusion / Help-Seeking Signal <span class="metric-threshold">(≤ 15%)</span></div>
+          <div class="metric-compare">
+            <span class="control-val">9%</span>
+            <span class="arrow">→</span>
+            <span class="metric-value" style="color:var(--bad);">24%</span>
+          </div>
+          <div class="metric-delta delta-bad">✕ Above threshold</div>
+        </div>
+      </div>
+
+      <!-- PATH FLOW -->
+      <div class="flow-card" style="margin-top:22px;">
+        <div class="flow-legend">
+          <span class="fl-item"><span class="fl-swatch" style="background:var(--purple-accent)"></span>Primary path</span>
+          <span class="fl-item"><span class="fl-swatch" style="background:#7C3AED;opacity:.28"></span>Dropped mid-onboarding</span>
+          <span class="fl-item"><span class="li-pin" style="width:15px;height:15px;font-size:0;background:var(--bad);"></span>Priority 5</span>
+          <span class="fl-item"><span class="li-pin" style="width:15px;height:15px;font-size:0;background:var(--warn);"></span>Priority 4</span>
+          <span class="fl-item"><span class="li-pin" style="width:15px;height:15px;font-size:0;background:var(--purple-accent);"></span>Priority 3</span>
+          <span class="fl-item"><span class="li-pin" style="width:15px;height:15px;font-size:0;background:#8B87A0;"></span>Priority 2</span>
+        </div>
+
+        <!-- CONTROL ROW -->
+        <div class="flow-row">
+          <div class="flow-row-label">
+            <span class="flow-row-name">Control · 6-step flow</span>
+            <span class="flow-row-stat">58% stated continue</span>
+          </div>
+          <div class="flow-canvas" id="canvas-control">
+            <svg viewBox="0 0 1000 205" preserveAspectRatio="none">
+              <text x="60" y="20" font-size="11" fill="#9CA3AF" font-weight="700">START</text>
+              <text x="280" y="20" font-size="11" fill="#9CA3AF" font-weight="700">STEPS 2–5</text>
+              <text x="500" y="20" font-size="11" fill="#9CA3AF" font-weight="700">END OF ONBOARDING</text>
+              <text x="800" y="20" font-size="11" fill="#9CA3AF" font-weight="700">DECISION</text>
+
+              <defs>
+                <linearGradient id="riverControlOnb" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.16"/>
+                  <stop offset="80%" stop-color="#7C3AED" stop-opacity="0.28"/>
+                  <stop offset="100%" stop-color="#2E9E6B" stop-opacity="0.32"/>
+                </linearGradient>
+              </defs>
+              <!-- one continuous river: 100 (start) -> 86 (after mid-dropout) -> 86 flat to decision point -> 58 (after abandon fork) -->
+              <path d="M60,40 C175,40 175,47 290,47 C535,47 535,47 780,47 C850,47 850,61 920,61
+                       L920,119 C850,119 850,133 780,133 C535,133 535,133 290,133 C175,133 175,140 60,140 Z"
+                    fill="url(#riverControlOnb)"/>
+
+              <!-- mid-onboarding dropout branch: true fork, both edges share the exact same origin point -->
+              <path d="M290,133 C340,133 340,164 400,164 L400,178 C340,178 340,133 290,133 Z" fill="#7C3AED" opacity="0.24"/>
+              <text x="405" y="186" font-size="9.5" fill="#8A6FC7" font-weight="700">-14 dropped mid-onboarding</text>
+
+              <!-- final decision fork: Abandon branch peels from the same point the river's bottom edge reaches at x=780 -->
+              <path d="M780,133 C830,133 830,168 890,168 L890,196 C830,196 830,133 780,133 Z" fill="#7C3AED" opacity="0.3"/>
+              <text x="820" y="204" font-size="9.5" fill="#8A6FC7" font-weight="700">Abandon (decision) 28</text>
+
+              <text x="925" y="70" font-size="10" fill="#2E7D4F" font-weight="700">Continue 58</text>
+            </svg>
+            <div class="flow-marker m-p2" data-issue="c2" style="left:15%; top:44%;">1</div>
+            <div class="flow-marker m-p3" data-issue="c1" style="left:40%; top:44%;">2</div>
+            <div class="flow-marker m-p3" data-issue="c3" style="left:40%; top:60%;">3</div>
+            <div class="flow-marker m-p5" data-issue="c4" style="left:35%; top:83%;">4</div>
+          </div>
+        </div>
+
+        <div class="flow-divider"></div>
+
+        <!-- VARIANT ROW -->
+        <div class="flow-row">
+          <div class="flow-row-label">
+            <span class="flow-row-name">Variant · 3-step flow</span>
+            <span class="flow-row-stat">71% stated continue</span>
+          </div>
+          <div class="flow-canvas" id="canvas-variant">
+            <svg viewBox="0 0 1000 205" preserveAspectRatio="none">
+              <text x="60" y="20" font-size="11" fill="#9CA3AF" font-weight="700">START</text>
+              <text x="280" y="20" font-size="11" fill="#9CA3AF" font-weight="700">COMBINED DETAILS</text>
+              <text x="500" y="20" font-size="11" fill="#9CA3AF" font-weight="700">END OF ONBOARDING</text>
+              <text x="800" y="20" font-size="11" fill="#9CA3AF" font-weight="700">DECISION</text>
+
+              <defs>
+                <linearGradient id="riverVariantOnb" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.22"/>
+                  <stop offset="80%" stop-color="#7C3AED" stop-opacity="0.36"/>
+                  <stop offset="100%" stop-color="#2E9E6B" stop-opacity="0.4"/>
+                </linearGradient>
+              </defs>
+              <!-- one continuous river: 100 (start) -> 94 (after mid-dropout) -> 94 flat to decision point -> 71 (after abandon fork) -->
+              <path d="M60,40 C175,40 175,43 290,43 C535,43 535,43 780,43 C850,43 850,54.5 920,54.5
+                       L920,125.5 C850,125.5 850,137 780,137 C535,137 535,137 290,137 C175,137 175,140 60,140 Z"
+                    fill="url(#riverVariantOnb)"/>
+
+              <path d="M290,137 C330,137 330,158 380,158 L380,164 C330,164 330,137 290,137 Z" fill="#7C3AED" opacity="0.28"/>
+              <text x="385" y="172" font-size="9.5" fill="#8A6FC7" font-weight="700">-6 dropped mid-onboarding</text>
+
+              <path d="M780,137 C820,137 820,166 870,166 L870,189 C820,189 820,137 780,137 Z" fill="#7C3AED" opacity="0.34"/>
+              <text x="805" y="199" font-size="9.5" fill="#8A6FC7" font-weight="700">Abandon (decision) 23</text>
+
+              <text x="925" y="65" font-size="10" fill="#2E7D4F" font-weight="700">Continue 71</text>
+            </svg>
+            <div class="flow-marker m-p4" data-issue="v2" style="left:29%; top:40%;">1</div>
+            <div class="flow-marker m-p4" data-issue="v1" style="left:78%; top:26%;">2</div>
+            <div class="flow-marker m-p3" data-issue="v3" style="left:80%; top:70%;">3</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUOTES (default view) -->
+      <div class="quotes-card" style="margin-top:22px;">
+        <div class="quotes-head">
+          <div class="quotes-title">Quotes</div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div class="included-pill" style="cursor:pointer;" onclick="openModal('issues')">Included Issues (7)</div>
+            <div class="quotes-count">7 quotes</div>
+          </div>
+        </div>
+        <div class="quote-cards-row">
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EFECFB; border-color:#D8CCF0; color:var(--purple-700);">Control</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openModal('issues'); selectIssue('c4')">Issue: Integration drop-off</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"I wasn't ready to connect my calendar yet, so I closed the tab there and never came back to finish."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('c4')">Open Details</button></div>
+            </div>
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EFECFB; border-color:#D8CCF0; color:var(--purple-700);">Control</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openModal('issues'); selectIssue('c1')">Issue: Step fatigue</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"By the fourth screen I was just clicking through without really reading anything — I just wanted to get to the app."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('c1')">Open Details</button></div>
+            </div>
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EFECFB; border-color:#D8CCF0; color:var(--purple-700);">Control</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openModal('issues'); selectIssue('c3')">Issue: No sense of progress</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"I didn't know if I was on step 2 of 6 or step 2 of 20, so I almost gave up not knowing how much longer this would take."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('c3')">Open Details</button></div>
+            </div>
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EFECFB; border-color:#D8CCF0; color:var(--purple-700);">Control</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openModal('issues'); selectIssue('c2')">Issue: Duplicate info request</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"Wait, didn't I already tell you my team size when I signed up? Why is it asking again?"</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('c2')">Open Details</button></div>
+            </div>
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EEF6EF; border-color:#CDE6D2; color:#2E7D4F;">Variant</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openModal('issues'); selectIssue('v1')">Issue: Missing context</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"It was fast, but afterward I had no idea where to find the settings it was talking about — I just got dropped into the app."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('v1')">Open Details</button></div>
+            </div>
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EEF6EF; border-color:#CDE6D2; color:#2E7D4F;">Variant</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openModal('issues'); selectIssue('v2')">Issue: Rushed personalization</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"The one screen asked for my role, team size, and goal all at once with no explanation of why — I just picked whatever first."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('v2')">Open Details</button></div>
+            </div>
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EEF6EF; border-color:#CDE6D2; color:#2E7D4F;">Variant</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openModal('issues'); selectIssue('v3')">Issue: Unclear value</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"I finished onboarding in under a minute, but I actually didn't understand what the tool was for until I started clicking around myself."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('v3')">Open Details</button></div>
+            </div>
+        </div>
+      </div>
+      </div>
+
+      <div id="scenario-ecommerce" class="scenario-block">
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-top">
+          <div>
+            <div class="hero-eyebrow">Test Hypothesis</div>
+            <h1 class="hero-title">Changing the checkout CTA from blue to green will increase completed purchases.</h1>
+            <div class="hero-desc">We know mobile checkout drop-off is high and users report the current button feels low-contrast and easy to miss below the fold.</div>
+          </div>
+          <div class="hero-badge">
+            <div class="status"><span class="dot"></span>Significant win</div>
+            <div class="hero-compare">
+              <div class="hero-compare-item">
+                <div class="hero-compare-value control">5.16%</div>
+                <div class="hero-compare-label">Control</div>
+              </div>
+              <div class="hero-arrow">→</div>
+              <div class="hero-compare-item">
+                <div class="hero-compare-value variant">5.80%</div>
+                <div class="hero-compare-label">Variant</div>
+              </div>
+            </div>
+            <div class="hero-lift-label">conversion rate · <b>+12.4%</b> relative lift</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION HEADER -->
+      <div class="section-header">
+        Secondary &amp; Guardrail Metrics
+        <span class="chev">⌄</span>
+      </div>
+
+      <!-- METRIC GRID -->
+      <div class="metric-grid">
+        <div class="metric-card">
+          <span class="metric-tag tag-secondary">Secondary</span>
+          <div class="metric-label">Avg. Order Value</div>
+          <div class="metric-compare">
+            <span class="control-val">$63.50</span>
+            <span class="arrow">→</span>
+            <span class="metric-value">$64.20</span>
+          </div>
+          <div class="metric-delta delta-flat">● Not significant</div>
+        </div>
+        <div class="metric-card">
+          <span class="metric-tag tag-guardrail">Guardrail</span>
+          <div class="metric-label">Accessibility Contrast Ratio <span class="metric-threshold">(≥ 4.5:1 WCAG AA)</span></div>
+          <div class="metric-compare">
+            <span class="control-val">3.8:1</span>
+            <span class="arrow">→</span>
+            <span class="metric-value">5.2:1</span>
+          </div>
+          <div class="metric-delta delta-good">✓ Now passes threshold</div>
+        </div>
+        <div class="metric-card">
+          <span class="metric-tag tag-guardrail">Guardrail</span>
+          <div class="metric-label">Support Contacts <span class="metric-threshold">(≤ 1.0%)</span></div>
+          <div class="metric-compare">
+            <span class="control-val">0.7%</span>
+            <span class="arrow">→</span>
+            <span class="metric-value">0.6%</span>
+          </div>
+          <div class="metric-delta delta-good">✓ Clear</div>
+        </div>
+      </div>
+
+      <!-- PATH FLOW (no heading/description, just the card) -->
+      <div class="flow-card" style="margin-top:22px;">
+        <div class="flow-legend">
+          <span class="fl-item"><span class="fl-swatch" style="background:var(--purple-accent)"></span>Primary path</span>
+          <span class="fl-item"><span class="fl-swatch" style="background:#7C3AED;opacity:.28"></span>Drop-off</span>
+          <span class="fl-item"><span class="li-pin" style="width:15px;height:15px;font-size:0;background:var(--warn);"></span>Medium issue</span>
+          <span class="fl-item"><span class="li-pin" style="width:15px;height:15px;font-size:0;background:#8B87A0;"></span>Low issue</span>
+          <span class="fl-item"><span class="li-pin" style="width:15px;height:15px;font-size:0;background:var(--good);"></span>Positive finding</span>
+        </div>
+
+        <!-- CONTROL ROW -->
+        <div class="flow-row">
+          <div class="flow-row-label">
+            <span class="flow-row-name">Control · Blue CTA</span>
+            <span class="flow-row-stat">52% reached confirmation</span>
+          </div>
+          <div class="flow-canvas" id="canvas-control">
+            <svg viewBox="0 0 1000 205" preserveAspectRatio="none">
+              <text x="60" y="20" font-size="11" fill="#9CA3AF" font-weight="700">PRODUCT PAGE</text>
+              <text x="290" y="20" font-size="11" fill="#9CA3AF" font-weight="700">CART</text>
+              <text x="520" y="20" font-size="11" fill="#9CA3AF" font-weight="700">CHECKOUT</text>
+              <text x="780" y="20" font-size="11" fill="#9CA3AF" font-weight="700">CONFIRMATION</text>
+
+              <defs>
+                <linearGradient id="riverControl" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.14"/>
+                  <stop offset="100%" stop-color="#7C3AED" stop-opacity="0.32"/>
+                </linearGradient>
+              </defs>
+              <path d="M60,40 C175,40 175,68.8 290,68.8 C405,68.8 405,73 520,73 C650,73 650,84.2 780,84.2
+                       L780,135.8 C650,135.8 650,147 520,147 C405,147 405,151.2 290,151.2 C175,151.2 175,140 60,140 Z"
+                    fill="url(#riverControl)"/>
+
+              <path d="M290,151.2 C350,151.2 350,178 420,178 L420,186 C350,186 350,151.2 290,151.2 Z" fill="#7C3AED" opacity="0.22"/>
+              <text x="428" y="186" font-size="9.5" fill="#8A6FC7" font-weight="700">-8 left cart</text>
+
+              <path d="M520,147 C580,147 580,182 650,182 L650,198 C580,198 580,147 520,147 Z" fill="#7C3AED" opacity="0.28"/>
+              <text x="658" y="196" font-size="9.5" fill="#8A6FC7" font-weight="700">-18 left at checkout</text>
+            </svg>
+            <div class="flow-marker m-p5" data-issue="ec-c1" style="left:16%; top:42%;">1</div>
+            <div class="flow-marker m-p4" data-issue="ec-c2" style="left:29%; top:39%;">2</div>
+            <div class="flow-marker m-p2" data-issue="ec-c3" style="left:52%; top:38%;">3</div>
+            <div class="flow-marker m-p1" data-issue="ec-c4" style="left:68%; top:60%;">4</div>
+          </div>
+        </div>
+
+        <div class="flow-divider"></div>
+
+        <!-- VARIANT ROW -->
+        <div class="flow-row">
+          <div class="flow-row-label">
+            <span class="flow-row-name">Variant · Green CTA</span>
+            <span class="flow-row-stat">64% reached confirmation</span>
+          </div>
+          <div class="flow-canvas" id="canvas-variant">
+            <svg viewBox="0 0 1000 205" preserveAspectRatio="none">
+              <text x="60" y="20" font-size="11" fill="#9CA3AF" font-weight="700">PRODUCT PAGE</text>
+              <text x="290" y="20" font-size="11" fill="#9CA3AF" font-weight="700">CART</text>
+              <text x="520" y="20" font-size="11" fill="#9CA3AF" font-weight="700">CHECKOUT</text>
+              <text x="780" y="20" font-size="11" fill="#9CA3AF" font-weight="700">CONFIRMATION</text>
+
+              <defs>
+                <linearGradient id="riverVariant" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.20"/>
+                  <stop offset="100%" stop-color="#7C3AED" stop-opacity="0.46"/>
+                </linearGradient>
+              </defs>
+              <path d="M60,40 C175,40 175,65.2 290,65.2 C405,65.2 405,67.2 520,67.2 C650,67.2 650,71.2 780,71.2
+                       L780,148.8 C650,148.8 650,152.8 520,152.8 C405,152.8 405,154.8 290,154.8 C175,154.8 175,140 60,140 Z"
+                    fill="url(#riverVariant)"/>
+
+              <path d="M290,154.8 C350,154.8 350,176 420,176 L420,181 C350,181 350,154.8 290,154.8 Z" fill="#7C3AED" opacity="0.3"/>
+              <text x="428" y="181" font-size="9.5" fill="#8A6FC7" font-weight="700">-6 left cart</text>
+
+              <path d="M520,152.8 C580,152.8 580,178 650,178 L650,189 C580,189 580,152.8 520,152.8 Z" fill="#7C3AED" opacity="0.38"/>
+              <text x="658" y="187" font-size="9.5" fill="#8A6FC7" font-weight="700">-12 left at checkout</text>
+            </svg>
+            <div class="flow-marker m-p2" data-issue="ec-v1" style="left:52%; top:38%;">1</div>
+            <div class="flow-marker m-p4" data-issue="ec-v2" style="left:78%; top:50%;">2</div>
+            <div class="flow-marker m-p3" data-issue="ec-v3" style="left:63%; top:60%;">3</div>
+            <div class="flow-marker m-positive" data-issue="ec-v4" style="left:25%; top:38%;">4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUOTES (default view) -->
+      <div class="quotes-card" style="margin-top:22px;">
+        <div class="quotes-head">
+          <div class="quotes-title">Quotes</div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div class="included-pill" style="cursor:pointer;" onclick="openModal('issues')">Included Issues (8)</div>
+            <div class="quotes-count">4 quotes</div>
+          </div>
+        </div>
+        <div class="quote-cards-row">
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EFECFB; border-color:#D8CCF0; color:var(--purple-700);">Control</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openPopup('ec-c1')">Issue: Confirmation clarity</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"I clicked it fast but then second-guessed whether my order actually went through — no confirmation animation."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('ec-c1')">Open Details</button></div>
+            </div>
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EFECFB; border-color:#D8CCF0; color:var(--purple-700);">Control</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openPopup('ec-c2')">Issue: Low contrast CTA</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"I scrolled right past the button the first time — it just looks like part of the background."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('ec-c2')">Open Details</button></div>
+            </div>
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EEF6EF; border-color:#CDE6D2; color:#2E7D4F;">Variant</span>
+                <span class="qc-tag issue-tag" style="cursor:pointer;" onclick="openPopup('ec-v3')">Issue: Shipping cost timing</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"Wish I'd known the shipping fee before I filled out the whole form — almost bailed at the last step."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('ec-v3')">Open Details</button></div>
+            </div>
+            <div class="qc-card">
+              <div class="qc-tags">
+                <span class="qc-tag" style="background:#EEF6EF; border-color:#CDE6D2; color:#2E7D4F;">Variant</span>
+                <span class="qc-tag" style="background:var(--good-bg); border-color:#BFE8D6; color:var(--good); cursor:pointer;" onclick="openPopup('ec-v4')">Positive: Contrast</span>
+                <button class="qc-hide"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.7 18.7 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button>
+              </div>
+              <div class="qc-text">"The green button actually stands out now — I almost missed the old one scrolling on my phone."</div>
+              <div class="qc-footer"><button class="qc-open-btn" onclick="openModal('issues'); selectIssue('ec-v4')">Open Details</button></div>
+            </div>
+        </div>
+      </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+  </main>
+</div>
+
+<!-- DASHBOARD EVIDENCE MODAL -->
+<div class="modal-overlay" id="modal-overlay-saas" onclick="if(event.target===this) closeModal()">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <div class="modal-title">Dashboard Evidence</div>
+      <button class="modal-close" onclick="closeModal()">Close ✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <div class="m-tab" data-tab="quotes" onclick="switchTab('quotes')">Quotes (7)</div>
+        <div class="m-tab active" data-tab="issues" onclick="switchTab('issues')">Issues (7)</div>
+      </div>
+
+      <!-- QUOTES TAB -->
+      <div class="m-tabpanel" data-tab="quotes">
+        <div class="m-quote-list">
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p5">Priority 5</span><span class="ev-tag">Control</span></div>
+            <div class="m-quote-text">"I wasn't ready to connect my calendar yet, so I closed the tab there and never came back to finish."</div>
+            <div class="m-quote-meta">Linked to: Integration Step Drop-off</div>
+          </div>
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p4">Priority 4</span><span class="ev-tag">Variant</span></div>
+            <div class="m-quote-text">"It was fast, but afterward I had no idea where to find the settings it was talking about — I just got dropped into the app."</div>
+            <div class="m-quote-meta">Linked to: Missing Post-Onboarding Context</div>
+          </div>
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p4">Priority 4</span><span class="ev-tag">Variant</span></div>
+            <div class="m-quote-text">"The one screen asked for my role, team size, and goal all at once with no explanation of why — I just picked whatever first."</div>
+            <div class="m-quote-meta">Linked to: Rushed Personalization</div>
+          </div>
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p3">Priority 3</span><span class="ev-tag">Control</span></div>
+            <div class="m-quote-text">"By the fourth screen I was just clicking through without really reading anything — I just wanted to get to the app."</div>
+            <div class="m-quote-meta">Linked to: Step Fatigue</div>
+          </div>
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p3">Priority 3</span><span class="ev-tag">Control</span></div>
+            <div class="m-quote-text">"I didn't know if I was on step 2 of 6 or step 2 of 20, so I almost gave up not knowing how much longer this would take."</div>
+            <div class="m-quote-meta">Linked to: No Sense of Progress</div>
+          </div>
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p3">Priority 3</span><span class="ev-tag">Variant</span></div>
+            <div class="m-quote-text">"I finished onboarding in under a minute, but I actually didn't understand what the tool was for until I started clicking around myself."</div>
+            <div class="m-quote-meta">Linked to: Unclear Product Value</div>
+          </div>
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p2">Priority 2</span><span class="ev-tag">Control</span></div>
+            <div class="m-quote-text">"Wait, didn't I already tell you my team size when I signed up? Why is it asking again?"</div>
+            <div class="m-quote-meta">Linked to: Duplicate Information Request</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ISSUES TAB -->
+      <div class="m-tabpanel active" data-tab="issues">
+        <div class="priority-filters">
+          <div class="pf-chip selected" data-filtertype="group" data-filter="all">All <span class="pf-count">7</span></div>
+          <div class="pf-chip" data-filtertype="group" data-filter="control"><span class="pf-dot" style="background:var(--purple-700);"></span>Control <span class="pf-count">4</span></div>
+          <div class="pf-chip" data-filtertype="group" data-filter="variant"><span class="pf-dot" style="background:#2E7D4F;"></span>Variant <span class="pf-count">3</span></div>
+        </div>
+        <div class="priority-filters">
+          <div class="pf-chip selected" data-filtertype="sev" data-filter="all">All priorities</div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="p5"><span class="pf-dot" style="background:var(--bad);"></span>P5 <span class="pf-count">1</span></div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="p4"><span class="pf-dot" style="background:var(--warn);"></span>P4 <span class="pf-count">2</span></div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="p3"><span class="pf-dot" style="background:var(--purple-accent);"></span>P3 <span class="pf-count">3</span></div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="p2"><span class="pf-dot" style="background:#8B87A0;"></span>P2 <span class="pf-count">1</span></div>
+        </div>
+
+        <!-- CONTROL ISSUES -->
+        <div class="evidence-card" data-issue="c4" data-severity="p5" data-group="control">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p5">Priority 5</span>
+              <span class="ev-tag">Control</span>
+            </div>
+            <div class="ev-category">Integration Step Drop-off</div>
+            <div class="ev-desc"><b>Integration Step Drop-off (Step 5 — Connect Calendar/Tool):</b> Agents reaching the integration/permission step frequently abandon onboarding entirely here, since they aren't ready to grant that access yet. This is the largest single driver of mid-onboarding abandonment in Control.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Make the integration step skippable, with a clear "connect later" path that doesn't block onboarding completion.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Step 5 — Integration prompt</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="c1" data-severity="p3" data-group="control">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p3">Priority 3</span>
+              <span class="ev-tag">Control</span>
+            </div>
+            <div class="ev-category">Step Fatigue</div>
+            <div class="ev-desc"><b>Step Fatigue (Steps 4-6):</b> By the later screens, agents stop engaging carefully and click through without reading, reducing both answer quality and reported confidence in what they agreed to.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Cut or consolidate the later steps — this is the core justification for testing a shorter flow.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Step 4 — Goal selection</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="c3" data-severity="p3" data-group="control">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p3">Priority 3</span>
+              <span class="ev-tag">Control</span>
+            </div>
+            <div class="ev-category">No Sense of Progress</div>
+            <div class="ev-desc"><b>No Sense of Progress (Steps 1-6):</b> Without a visible step count, agents can't tell how much of the flow remains, which several described as a reason they considered abandoning partway through.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Add a persistent step indicator (e.g., "Step 3 of 6") across the whole flow.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Step 2 — Role selection</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="c2" data-severity="p2" data-group="control">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p2">Priority 2</span>
+              <span class="ev-tag">Control</span>
+            </div>
+            <div class="ev-category">Duplicate Information Request</div>
+            <div class="ev-desc"><b>Duplicate Information Request (Step 3 — Team Size):</b> Onboarding re-asks for information already provided at signup, which agents noticed and flagged as mildly frustrating rather than flow-ending.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Pre-fill fields already captured at signup instead of re-asking during onboarding.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Step 3 — Team size</div>
+          </div>
+        </div>
+
+        <!-- VARIANT ISSUES -->
+        <div class="evidence-card" data-issue="v1" data-severity="p4" data-group="variant">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p4">Priority 4</span>
+              <span class="ev-tag">Variant</span>
+            </div>
+            <div class="ev-category">Missing Post-Onboarding Context</div>
+            <div class="ev-desc"><b>Missing Post-Onboarding Context (Step 3 — Review → App):</b> Agents finish quickly but land in the product without knowing where key features live, since explanatory content that existed in Control's longer flow was cut. This is the direct driver of the Confusion guardrail breach.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Add a brief, dismissible in-app guide covering the 2-3 things onboarding used to explain, rather than cutting that content entirely.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Step 3 — Entering app post-onboarding</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="v2" data-severity="p4" data-group="variant">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p4">Priority 4</span>
+              <span class="ev-tag">Variant</span>
+            </div>
+            <div class="ev-category">Rushed Personalization</div>
+            <div class="ev-desc"><b>Rushed Personalization (Step 2 — Combined Details):</b> Role, team size, and goal are combined into a single dense screen with no explanation of why each matters, leading agents to default to the fastest answer. This is the direct driver of the Setup Completeness guardrail breach.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Keep the screen count low, but add brief inline context for why each field matters rather than presenting them as a bare form.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Step 2 — Combined details screen</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="v3" data-severity="p3" data-group="variant">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p3">Priority 3</span>
+              <span class="ev-tag">Variant</span>
+            </div>
+            <div class="ev-category">Unclear Product Value</div>
+            <div class="ev-desc"><b>Unclear Product Value (Steps 1-3):</b> The shorter flow completes fast but doesn't leave agents with a clear sense of why the product matters, which several linked to lower early motivation even when they chose to continue.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Use one of the three steps to briefly frame the core value proposition, rather than only collecting setup information.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Step 1 — Welcome screen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD EVIDENCE MODAL -->
+<div class="modal-overlay" id="modal-overlay-ecommerce" onclick="if(event.target===this) closeModal()">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <div class="modal-title">Dashboard Evidence</div>
+      <button class="modal-close" onclick="closeModal()">Close ✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <div class="m-tab" data-tab="quotes" onclick="switchTab('quotes')">Quotes (4)</div>
+        <div class="m-tab active" data-tab="issues" onclick="switchTab('issues')">Issues (8)</div>
+      </div>
+
+      <!-- QUOTES TAB -->
+      <div class="m-tabpanel" data-tab="quotes">
+        <div class="m-quote-list">
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p5">Priority 5</span><span class="ev-tag">Control</span></div>
+            <div class="m-quote-text">"I clicked it fast but then second-guessed whether my order actually went through — no confirmation animation."</div>
+            <div class="m-quote-meta">Linked to: Feedback &amp; Status</div>
+          </div>
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p4">Priority 4</span><span class="ev-tag">Control</span></div>
+            <div class="m-quote-text">"I scrolled right past the button the first time — it just looks like part of the background."</div>
+            <div class="m-quote-meta">Linked to: Visual Hierarchy &amp; Contrast</div>
+          </div>
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri p3">Priority 3</span><span class="ev-tag">Variant</span></div>
+            <div class="m-quote-text">"Wish I'd known the shipping fee before I filled out the whole form — almost bailed at the last step."</div>
+            <div class="m-quote-meta">Linked to: Pricing Transparency</div>
+          </div>
+          <div class="m-quote-item">
+            <div class="m-quote-tags"><span class="ev-tag pri positive">Positive</span><span class="ev-tag">Variant</span></div>
+            <div class="m-quote-text">"The green button actually stands out now — I almost missed the old one scrolling on my phone."</div>
+            <div class="m-quote-meta">Linked to: Visual Hierarchy &amp; Contrast</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ISSUES TAB -->
+      <div class="m-tabpanel active" data-tab="issues">
+        <div class="priority-filters">
+          <div class="pf-chip selected" data-filtertype="group" data-filter="all">All <span class="pf-count">8</span></div>
+          <div class="pf-chip" data-filtertype="group" data-filter="control"><span class="pf-dot" style="background:var(--purple-700);"></span>Control <span class="pf-count">4</span></div>
+          <div class="pf-chip" data-filtertype="group" data-filter="variant"><span class="pf-dot" style="background:#2E7D4F;"></span>Variant <span class="pf-count">4</span></div>
+        </div>
+        <div class="priority-filters">
+          <div class="pf-chip selected" data-filtertype="sev" data-filter="all">All priorities</div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="p5"><span class="pf-dot" style="background:var(--bad);"></span>P5 <span class="pf-count">1</span></div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="p4"><span class="pf-dot" style="background:var(--warn);"></span>P4 <span class="pf-count">2</span></div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="p3"><span class="pf-dot" style="background:var(--purple-accent);"></span>P3 <span class="pf-count">1</span></div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="p2"><span class="pf-dot" style="background:#8B87A0;"></span>P2 <span class="pf-count">2</span></div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="p1"><span class="pf-dot" style="background:#C4C1D6;"></span>P1 <span class="pf-count">1</span></div>
+          <div class="pf-chip" data-filtertype="sev" data-filter="positive"><span class="pf-dot" style="background:var(--good);"></span>Positive <span class="pf-count">1</span></div>
+        </div>
+
+        <!-- CONTROL ISSUES -->
+        <div class="evidence-card" data-issue="ec-c1" data-severity="p5" data-group="control">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p5">Priority 5</span>
+              <span class="ev-tag">Control</span>
+            </div>
+            <div class="ev-category">Feedback &amp; Status</div>
+            <div class="ev-desc"><b>Feedback &amp; Status (Step 3 — Checkout):</b> Agents tapped the checkout CTA and received no confirmation animation, message, or state change. Several hesitated and re-tapped, unsure whether the order had gone through.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Add an immediate inline confirmation state on tap — a brief loading indicator followed by a clear success message.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Checkout — tap moment, mobile session</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="ec-c2" data-severity="p4" data-group="control">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p4">Priority 4</span>
+              <span class="ev-tag">Control</span>
+            </div>
+            <div class="ev-category">Visual Hierarchy &amp; Contrast</div>
+            <div class="ev-desc"><b>Visual Hierarchy &amp; Contrast (Step 1-2 — Product Page → Cart):</b> The blue CTA reads close to the surrounding UI chrome. Several agents scrolled past it on first pass and had to backtrack to locate it.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Increase contrast between the CTA and its background — this is the issue the Variant's color change was designed to address.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Product Page, mobile session</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="ec-c3" data-severity="p2" data-group="control">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p2">Priority 2</span>
+              <span class="ev-tag">Control</span>
+            </div>
+            <div class="ev-category">Cart Clarity</div>
+            <div class="ev-desc"><b>Cart Clarity (Step 2 — Cart):</b> A few agents were uncertain whether an item had actually been added to the cart, since the cart icon count updates without any other visible acknowledgment.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Add a brief toast or micro-animation confirming the item was added, in addition to the count update.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Cart, mobile session</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="ec-c4" data-severity="p1" data-group="control">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p1">Priority 1</span>
+              <span class="ev-tag">Control</span>
+            </div>
+            <div class="ev-category">Process Transparency</div>
+            <div class="ev-desc"><b>Process Transparency (Step 3 — Checkout):</b> There's no step indicator during checkout, so agents couldn't tell how many fields or screens remained, which a few described as mildly discouraging.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Add a lightweight progress indicator (e.g., "Step 2 of 3") to the top of the checkout flow.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Checkout, mobile session</div>
+          </div>
+        </div>
+
+        <!-- VARIANT ISSUES -->
+        <div class="evidence-card" data-issue="ec-v1" data-severity="p2" data-group="variant">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p2">Priority 2</span>
+              <span class="ev-tag">Variant</span>
+            </div>
+            <div class="ev-category">Interaction &amp; Layout</div>
+            <div class="ev-desc"><b>Interaction &amp; Layout (Step 3 — Checkout):</b> On mobile, several agents described the checkout button as difficult to tap precisely, independent of its color. The touch target didn't change between variants, so this persists here too.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Increase the CTA's tap target to at least 44×44px with additional padding, regardless of which color ships.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Checkout — tap moment, mobile session</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="ec-v2" data-severity="p4" data-group="variant">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p4">Priority 4</span>
+              <span class="ev-tag">Variant</span>
+            </div>
+            <div class="ev-category">Feedback &amp; Status</div>
+            <div class="ev-desc"><b>Feedback &amp; Status (Step 4 — Confirmation):</b> The confirmation screen has a noticeable load delay after checkout, and a few agents tapped the CTA a second time during the gap, unsure if the first tap registered.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Show a loading state immediately on tap so the delay reads as "in progress" rather than "nothing happened."</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Confirmation, mobile session</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="ec-v3" data-severity="p3" data-group="variant">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri p3">Priority 3</span>
+              <span class="ev-tag">Variant</span>
+            </div>
+            <div class="ev-category">Pricing Transparency</div>
+            <div class="ev-desc"><b>Pricing Transparency (Step 3 — Checkout):</b> Shipping cost is only shown on the final checkout screen. Several agents expressed frustration at filling out the full form before seeing the total cost.</div>
+            <div class="ev-eyebrow">Suggestion</div>
+            <div class="ev-suggestion">Surface estimated shipping cost on the Cart page, before checkout begins.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Checkout, mobile session</div>
+          </div>
+        </div>
+
+        <div class="evidence-card" data-issue="ec-v4" data-severity="positive" data-group="variant">
+          <div class="ev-left">
+            <div class="ev-tags">
+              <span class="ev-tag pri positive">Positive</span>
+              <span class="ev-tag">Variant</span>
+            </div>
+            <div class="ev-category">Visual Hierarchy &amp; Contrast</div>
+            <div class="ev-desc"><b>Visual Hierarchy &amp; Contrast (Step 2 — Cart):</b> Agents in the Variant group located and reached the checkout CTA faster and more directly than in Control, several noting the higher-contrast green stood out against the page.</div>
+            <div class="ev-eyebrow">Why this worked</div>
+            <div class="ev-suggestion">Higher contrast against the surrounding page reduced time spent visually searching for the next step — keep this contrast level in future iterations.</div>
+          </div>
+          <div class="ev-right">
+            <div class="ev-shot-eyebrow">Screenshot</div>
+            <div class="ev-shot">▭</div>
+            <div class="ev-shot-caption">Cart → Checkout, mobile session</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SINGLE-ISSUE POPUP -->
+<div class="issue-popup-overlay" id="issue-popup-overlay" onclick="if(event.target===this) closePopup()">
+  <div class="issue-popup">
+    <div class="ip-head">
+      <div class="ip-tags" id="ip-tags"></div>
+      <button class="ip-close" onclick="closePopup()">✕</button>
+    </div>
+    <div class="ip-category" id="ip-category">—</div>
+    <div class="ip-desc" id="ip-desc">—</div>
+    <div class="ip-quote" id="ip-quote">—</div>
+
+    <div class="ip-replay-label">Session Replay</div>
+    <div class="ip-shots">
+      <div class="ip-shot-frame" id="ip-shot-frame">▭</div>
+      <div class="ip-shot-nav">
+        <div class="ip-shot-arrow" onclick="stepFrame(-1)">‹</div>
+        <div class="ip-shot-arrow" onclick="stepFrame(1)">›</div>
+      </div>
+    </div>
+    <div class="ip-shot-dots" id="ip-shot-dots"></div>
+    <div class="ip-replay-caption" id="ip-replay-caption">—</div>
+
+    <button class="ip-allissues-btn" id="ip-allissues-btn">All Issues</button>
+  </div>
+</div>
+
+<script>
+  const issueDetailsSaas = {
+    c1: { pri: 'p3', priLabel: 'Priority 3', group: 'Control', category: 'Step Fatigue',
+      desc: "By the later screens, agents stop engaging carefully and click through without reading, reducing both answer quality and reported confidence in what they agreed to.",
+      quote: "By the fourth screen I was just clicking through without really reading anything — I just wanted to get to the app.",
+      frames: [
+        { label: 'Step 3 — Team size', flagged: false },
+        { label: 'Step 4 — Goal selection (issue occurs)', flagged: true },
+        { label: 'Step 5 — Integration prompt', flagged: false }
+      ] },
+    c2: { pri: 'p2', priLabel: 'Priority 2', group: 'Control', category: 'Duplicate Information Request',
+      desc: "Onboarding re-asks for information already provided at signup, which agents noticed and flagged as mildly frustrating rather than flow-ending.",
+      quote: "Wait, didn't I already tell you my team size when I signed up? Why is it asking again?",
+      frames: [
+        { label: 'Signup — Team size entered', flagged: false },
+        { label: 'Step 3 — Team size asked again (issue occurs)', flagged: true },
+        { label: 'Step 4 — Goal selection', flagged: false }
+      ] },
+    c3: { pri: 'p3', priLabel: 'Priority 3', group: 'Control', category: 'No Sense of Progress',
+      desc: "Without a visible step count, agents can't tell how much of the flow remains, which several described as a reason they considered abandoning partway through.",
+      quote: "I didn't know if I was on step 2 of 6 or step 2 of 20, so I almost gave up not knowing how much longer this would take.",
+      frames: [
+        { label: 'Step 1 — Welcome screen', flagged: false },
+        { label: 'Step 2 — Role selection (issue occurs)', flagged: true },
+        { label: 'Step 3 — Team size', flagged: false }
+      ] },
+    c4: { pri: 'p5', priLabel: 'Priority 5', group: 'Control', category: 'Integration Step Drop-off',
+      desc: "Agents reaching the integration/permission step frequently abandon onboarding entirely here, since they aren't ready to grant that access yet. This is the largest single driver of mid-onboarding abandonment in Control.",
+      quote: "I wasn't ready to connect my calendar yet, so I closed the tab there and never came back to finish.",
+      frames: [
+        { label: 'Step 4 — Goal selection', flagged: false },
+        { label: 'Step 5 — Integration prompt (issue occurs)', flagged: true },
+        { label: 'Session ends — tab closed', flagged: false }
+      ] },
+    v1: { pri: 'p4', priLabel: 'Priority 4', group: 'Variant', category: 'Missing Post-Onboarding Context',
+      desc: "Agents finish quickly but land in the product without knowing where key features live, since explanatory content that existed in Control's longer flow was cut. This is the direct driver of the Confusion guardrail breach.",
+      quote: "It was fast, but afterward I had no idea where to find the settings it was talking about — I just got dropped into the app.",
+      frames: [
+        { label: 'Step 3 — Review', flagged: false },
+        { label: 'Entering app (issue occurs)', flagged: true },
+        { label: 'Agent searching for settings', flagged: false }
+      ] },
+    v2: { pri: 'p4', priLabel: 'Priority 4', group: 'Variant', category: 'Rushed Personalization',
+      desc: "Role, team size, and goal are combined into a single dense screen with no explanation of why each matters, leading agents to default to the fastest answer. This is the direct driver of the Setup Completeness guardrail breach.",
+      quote: "The one screen asked for my role, team size, and goal all at once with no explanation of why — I just picked whatever first.",
+      frames: [
+        { label: 'Step 1 — Welcome screen', flagged: false },
+        { label: 'Step 2 — Combined details (issue occurs)', flagged: true },
+        { label: 'Step 3 — Review', flagged: false }
+      ] },
+    v3: { pri: 'p3', priLabel: 'Priority 3', group: 'Variant', category: 'Unclear Product Value',
+      desc: "The shorter flow completes fast but doesn't leave agents with a clear sense of why the product matters, which several linked to lower early motivation even when they chose to continue.",
+      quote: "I finished onboarding in under a minute, but I actually didn't understand what the tool was for until I started clicking around myself.",
+      frames: [
+        { label: 'Step 1 — Welcome screen (issue occurs)', flagged: true },
+        { label: 'Step 2 — Combined details', flagged: false },
+        { label: 'Step 3 — Review', flagged: false }
+      ] }
+  };
+
+  const issueDetailsEcommerce = {
+    'ec-c1': { pri: 'p5', priLabel: 'Priority 5', group: 'Control', category: 'Feedback & Status',
+      desc: "Agents tapped the checkout CTA and received no confirmation animation, message, or state change. Several hesitated and re-tapped, unsure whether the order had gone through.",
+      quote: "I clicked it fast but then second-guessed whether my order actually went through — no confirmation animation.",
+      frames: [
+        { label: 'Cart', flagged: false },
+        { label: 'Checkout — tap moment (issue occurs)', flagged: true },
+        { label: 'Confirmation (delayed)', flagged: false }
+      ] },
+    'ec-c2': { pri: 'p4', priLabel: 'Priority 4', group: 'Control', category: 'Visual Hierarchy & Contrast',
+      desc: "The blue CTA reads close to the surrounding UI chrome. Several agents scrolled past it on first pass and had to backtrack to locate it.",
+      quote: "I scrolled right past the button the first time — it just looks like part of the background.",
+      frames: [
+        { label: 'Product Page (issue occurs)', flagged: true },
+        { label: 'Scrolling back up', flagged: false },
+        { label: 'Cart', flagged: false }
+      ] },
+    'ec-c3': { pri: 'p2', priLabel: 'Priority 2', group: 'Control', category: 'Cart Clarity',
+      desc: "A few agents were uncertain whether an item had actually been added to the cart, since the cart icon count updates without any other visible acknowledgment.",
+      quote: "I added it to the cart but wasn't totally sure it worked — nothing really told me it had.",
+      frames: [
+        { label: 'Product Page', flagged: false },
+        { label: 'Cart tap (issue occurs)', flagged: true },
+        { label: 'Cart page', flagged: false }
+      ] },
+    'ec-c4': { pri: 'p1', priLabel: 'Priority 1', group: 'Control', category: 'Process Transparency',
+      desc: "There's no step indicator during checkout, so agents couldn't tell how many fields or screens remained, which a few described as mildly discouraging.",
+      quote: "I had no idea how many more fields were left, so I just kept guessing how much longer checkout would take.",
+      frames: [
+        { label: 'Checkout — shipping', flagged: false },
+        { label: 'Checkout — payment (issue occurs)', flagged: true },
+        { label: 'Checkout — review', flagged: false }
+      ] },
+    'ec-v1': { pri: 'p2', priLabel: 'Priority 2', group: 'Variant', category: 'Interaction & Layout',
+      desc: "On mobile, several agents described the checkout button as difficult to tap precisely, independent of its color. The touch target didn't change between variants, so this persists here too.",
+      quote: "Color's fine, but the button still feels a little small for a thumb tap.",
+      frames: [
+        { label: 'Cart', flagged: false },
+        { label: 'Checkout — tap moment (issue occurs)', flagged: true },
+        { label: 'Confirmation', flagged: false }
+      ] },
+    'ec-v2': { pri: 'p4', priLabel: 'Priority 4', group: 'Variant', category: 'Feedback & Status',
+      desc: "The confirmation screen has a noticeable load delay after checkout, and a few agents tapped the CTA a second time during the gap, unsure if the first tap registered.",
+      quote: "I tapped it, nothing happened for a second, so I tapped again — not sure if that caused a problem.",
+      frames: [
+        { label: 'Checkout — review', flagged: false },
+        { label: 'Loading gap (issue occurs)', flagged: true },
+        { label: 'Confirmation', flagged: false }
+      ] },
+    'ec-v3': { pri: 'p3', priLabel: 'Priority 3', group: 'Variant', category: 'Pricing Transparency',
+      desc: "Shipping cost is only shown on the final checkout screen. Several agents expressed frustration at filling out the full form before seeing the total cost.",
+      quote: "Wish I'd known the shipping fee before I filled out the whole form — almost bailed at the last step.",
+      frames: [
+        { label: 'Cart', flagged: false },
+        { label: 'Checkout — shipping revealed (issue occurs)', flagged: true },
+        { label: 'Checkout — review', flagged: false }
+      ] },
+    'ec-v4': { pri: 'positive', priLabel: 'Positive', group: 'Variant', category: 'Visual Hierarchy & Contrast',
+      desc: "Agents in the Variant group located and reached the checkout CTA faster and more directly than in Control, several noting the higher-contrast green stood out against the page.",
+      quote: "The green button actually stands out now — I almost missed the old one scrolling on my phone.",
+      frames: [
+        { label: 'Product Page', flagged: false },
+        { label: 'Cart → Checkout (issue occurs)', flagged: true },
+        { label: 'Checkout', flagged: false }
+      ] }
+  };
+
+  let currentPopupId = null;
+  let currentFrameIndex = 0;
+
+  let currentScenario = 'saas';
+
+  function switchScenario(scenario){
+    currentScenario = scenario;
+    document.getElementById('btn-saas').classList.toggle('active', scenario === 'saas');
+    document.getElementById('btn-ecommerce').classList.toggle('active', scenario === 'ecommerce');
+    document.getElementById('scenario-saas').classList.toggle('active', scenario === 'saas');
+    document.getElementById('scenario-ecommerce').classList.toggle('active', scenario === 'ecommerce');
+    document.getElementById('topbar-title-text').textContent =
+      scenario === 'saas' ? 'Onboarding Flow Length — Results' : 'Checkout Button Color — Results';
+    closeModal();
+    closePopup();
+  }
+
+  function currentIssueData(){
+    return currentScenario === 'ecommerce' ? issueDetailsEcommerce : issueDetailsSaas;
+  }
+
+  function openPopup(id){
+    const d = currentIssueData()[id];
+    if (!d) return;
+    currentPopupId = id;
+    currentFrameIndex = d.frames.findIndex(f => f.flagged);
+    if (currentFrameIndex < 0) currentFrameIndex = 0;
+
+    document.getElementById('ip-tags').innerHTML =
+      '<span class="ev-tag pri ' + d.pri + '">' + d.priLabel + '</span><span class="ev-tag">' + d.group + '</span>';
+    document.getElementById('ip-category').textContent = d.category;
+    document.getElementById('ip-desc').textContent = d.desc;
+    document.getElementById('ip-quote').textContent = '"' + d.quote + '"';
+
+    const dots = document.getElementById('ip-shot-dots');
+    dots.innerHTML = '';
+    d.frames.forEach((f, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'ip-shot-dot';
+      dot.addEventListener('click', () => { currentFrameIndex = i; renderFrame(); });
+      dots.appendChild(dot);
+    });
+
+    renderFrame();
+    document.getElementById('ip-allissues-btn').onclick = () => {
+      closePopup();
+      openModal('issues');
+      selectIssue(id);
+    };
+    document.getElementById('issue-popup-overlay').classList.add('show');
+  }
+
+  function renderFrame(){
+    const d = currentIssueData()[currentPopupId];
+    const frame = d.frames[currentFrameIndex];
+    document.getElementById('ip-shot-frame').classList.toggle('flagged', frame.flagged);
+    document.getElementById('ip-replay-caption').textContent = frame.label;
+    document.querySelectorAll('.ip-shot-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentFrameIndex);
+    });
+  }
+
+  function stepFrame(dir){
+    const d = currentIssueData()[currentPopupId];
+    currentFrameIndex = (currentFrameIndex + dir + d.frames.length) % d.frames.length;
+    renderFrame();
+  }
+
+  function closePopup(){
+    document.getElementById('issue-popup-overlay').classList.remove('show');
+  }
+
+  function activeModal(){
+    return document.getElementById(currentScenario === 'ecommerce' ? 'modal-overlay-ecommerce' : 'modal-overlay-saas');
+  }
+
+  function openModal(defaultTab){
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
+    activeModal().classList.add('show');
+    switchTab(defaultTab || 'issues');
+  }
+  function closeModal(){
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
+  }
+  function switchTab(tab){
+    const modal = document.querySelector('.modal-overlay.show');
+    if (!modal) return;
+    modal.querySelectorAll('.m-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    modal.querySelectorAll('.m-tabpanel').forEach(p => p.classList.toggle('active', p.dataset.tab === tab));
+  }
+
+  function selectIssue(id){
+    document.querySelectorAll('.flow-marker').forEach(m => {
+      m.classList.toggle('active', m.dataset.issue === id);
+    });
+    document.querySelectorAll('.evidence-card').forEach(c => {
+      c.classList.toggle('active', c.dataset.issue === id);
+    });
+    const card = document.querySelector('.evidence-card[data-issue="' + id + '"]');
+    if (card) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+  }
+
+  document.querySelectorAll('.flow-marker').forEach(m => {
+    m.addEventListener('click', () => openPopup(m.dataset.issue));
+  });
+  document.querySelectorAll('.evidence-card').forEach(c => {
+    c.addEventListener('click', () => selectIssue(c.dataset.issue));
+  });
+
+  function applyFilters(modal){
+    const groupChip = modal.querySelector('.pf-chip[data-filtertype="group"].selected');
+    const sevChip = modal.querySelector('.pf-chip[data-filtertype="sev"].selected');
+    const groupVal = groupChip ? groupChip.dataset.filter : 'all';
+    const sevVal = sevChip ? sevChip.dataset.filter : 'all';
+    modal.querySelectorAll('.evidence-card').forEach(card => {
+      const groupOk = groupVal === 'all' || card.dataset.group === groupVal;
+      const sevOk = sevVal === 'all' || card.dataset.severity === sevVal;
+      card.style.display = (groupOk && sevOk) ? '' : 'none';
+    });
+  }
+  document.querySelectorAll('.pf-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const modal = chip.closest('.modal-overlay');
+      const type = chip.dataset.filtertype;
+      modal.querySelectorAll('.pf-chip[data-filtertype="' + type + '"]').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      applyFilters(modal);
+    });
+  });
+</script>
+</body>
+</html>
